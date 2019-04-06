@@ -3,4 +3,5 @@ module.exports = (app)=>{
 
     app.get('/', (req,res)=>res.send("Welcome to the Travel Mania"));
     app.post('/createUser', ctrl.createUser);
+    app.get('/getUser/:email/:password', ctrl.getUser);
 }
