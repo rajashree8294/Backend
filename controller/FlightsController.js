@@ -14,3 +14,17 @@ exports.createFlights = (req,res) => {
     });
 };
 
+exports.getflights = (req,res) => {
+    const data = {
+        source: req.params.source,
+        destination: req.params.destination
+    };
+    Flights.find((data,(error,flights) => {
+        if(!flights || error){
+            res.status(401).send({'message':'flights with source destination not allowed'});
+        }else{
+            res.send({'flights':flights});
+        }
+    }))
+}
+
