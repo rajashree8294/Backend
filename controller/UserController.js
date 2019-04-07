@@ -1,6 +1,7 @@
 const SignUp = require('../model/SignUp');
 const EmailValidator = require('email-validator');
 const PasswordValidator = require('password-validator');
+const User = require('../model/SignUp');
 
 exports.createUser = (req,res)=>{
     const schema = new PasswordValidator();
@@ -12,16 +13,7 @@ exports.createUser = (req,res)=>{
     .has().symbols()
     .has().digits()
 
-    const nameSchema = new PasswordValidator();
-    nameSchema
-    .has().uppercase()
-    .has().lowercase()
-    .has().not().digits()
-    .has().not().symbols()
-
-    if(!checkForNullFields(req.body)
-        && EmailValidator.validate(req.body.email) 
-        && schema.validate(req.body.password)){
+    if(EmailValidator.validate(req.body.email) && schema.validate(req.body.password)){
         const userObj = new SignUp({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -30,7 +22,7 @@ exports.createUser = (req,res)=>{
         });
     
         userObj.save()
-        .then(()=>res.json({"message":"New user record created successfully"}))
+        .then(()=>res.status(200).json({"message":"New user record created successfully"}))
         .catch(()=>{
             res.status(400).json({"message":"Bad Request: email and password are required"});
         });
@@ -38,9 +30,12 @@ exports.createUser = (req,res)=>{
         res.status(400).json({"message":"Bad Request"});
 }
 
-function checkForNullFields(body){
-    console.log(body);
-    if(body.firstName === "" || body.lastName === "" || body.email === "" || body.password === "")
-        return true;
-    return false;
+exports.getUser = (req,res)=>{ 
+    User.findOne({email: req.params.email}, (err, data) => {
+        if(err || !data) res.status(400).json({"message":"Invalid EmailId/Password"});
+
+        else if(data.password !== req.params.password) res.status(401).json({"message":"Invalid Password"});
+
+        else res.status(200).json({"user": data});
+    });
 }
