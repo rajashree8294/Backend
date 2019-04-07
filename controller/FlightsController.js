@@ -15,16 +15,34 @@ exports.createFlights = (req,res) => {
 };
 
 exports.getflights = (req,res) => {
-    const data = {
-        source: req.params.source,
-        destination: req.params.destination
-    };
-    Flights.find((data,(error,flights) => {
-        if(!flights || error){
-            res.status(401).send({'message':'flights with source destination not allowed'});
-        }else{
-            res.send({'flights':flights});
-        }
-    }))
+    // const data = {
+    //     source: req.params.source,
+    //     destination: req.params.destination
+    // };
+    // Flights.find((data,(error,flights) => {
+    //     if(!flights || error){
+    //         res.status(401).send({'message':'flights with source destination not allowed'});
+    //     }else{
+    //         res.send({'flights':flights});
+    //     }
+    // }))
+
+    Flights.find({"source": req.params.source,
+                "destination":req.params.destination}, function(err,result){
+                   if (err)
+                   {
+                        res.send(err);
+                        console.log(err);
+                     
+                   }
+                   else{
+                       res.send(result);
+                       console.log(result);
+                   }
+
+
+
+                })
+           
 }
 
