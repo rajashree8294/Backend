@@ -4,8 +4,9 @@ module.exports = (app)=>{
 
     app.get('/', (req,res)=>res.send("Welcome to the Travel Mania"));
     app.post('/createUser', ctrl.createUser);
+    app.get('/getUser/:email/:password', ctrl.getUser);
+
     app.post('/createFlights',fli.createFlights);
-    //app.get('/flights/:source/:destination',(req,res)=>res.send(fli.getflights));
     app.get('/flights/:source/:destination',fli.getflights);
 
 }
