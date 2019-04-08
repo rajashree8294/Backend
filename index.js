@@ -54,7 +54,7 @@ module.exports = function(passport){
         });
       });  
 
-    app.post('/',
+    app.post('/getUser/:email/:password',
       passport.authenticate('local', { failureRedirect: '/error' }),
       function(req, res) {
         res.redirect('localhost:4200');
