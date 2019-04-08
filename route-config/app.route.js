@@ -8,5 +8,4 @@ module.exports = (app)=>{
 
     app.post('/createFlights',fli.createFlights);
     app.get('/flights/:source/:destination',fli.getflights);
-
 }
