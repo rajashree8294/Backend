@@ -9,4 +9,7 @@ module.exports = (app)=>{
     app.post('/createFlights',fli.createFlights);
     app.get('/flights/:source/:destination',fli.getflights);
 
+    app.post('/pay/:email', ctrl.startPayment);
+    app.get('/executePayment', ctrl.executePayment);
+    app.get('/cancel', ctrl.cancel);
 }
