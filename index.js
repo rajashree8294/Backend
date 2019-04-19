@@ -7,9 +7,9 @@ const paypal = require('paypal-rest-sdk');
 const dbConfig = require('./db-config/DatabaseConfig');
 
 paypal.configure({
-    'mode': 'sandbox',
-    'client_id': 'AbKVWmBC4KOBydhUS3v66W-y_QIqMRS-nV_nQEC7yQzc2oImECuAwKZJq-GJQ1GR5ihqzOu9jvLUdLbJ',
-    'client_secret': 'EJ6SC8OtrULEetMB9ITyE0W7THU5ssowvdfC1QQWE6jWffteqhUJKf7RBO5TzO_n7S3rm91qm0b2abpk'
+    'mode': 'sandbox', //sandbox or live
+    'client_id': 'Af_PNFloD8uH-l9eKKhH2nbvEUB0qZi1mEEuFAJ5E_zDkedPJu-QN_mi02rOA1aNAtv07GLuMTbIbVOd',
+    'client_secret': 'EGCvZHCMNXajd-e72eGoDnzWNbKOF5Fc1D0-nP15sZuy-nGKt5NVlhHWGVfBRn__x3udeZlF-2jRRGGq'
 });
 
 const app = express();
