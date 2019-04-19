@@ -6,8 +6,8 @@ const PasswordValidator = require('password-validator');
 let price;
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
-    'client_id': 'AbKVWmBC4KOBydhUS3v66W-y_QIqMRS-nV_nQEC7yQzc2oImECuAwKZJq-GJQ1GR5ihqzOu9jvLUdLbJ',
-    'client_secret': 'EJ6SC8OtrULEetMB9ITyE0W7THU5ssowvdfC1QQWE6jWffteqhUJKf7RBO5TzO_n7S3rm91qm0b2abpk'
+    'client_id': 'Af_PNFloD8uH-l9eKKhH2nbvEUB0qZi1mEEuFAJ5E_zDkedPJu-QN_mi02rOA1aNAtv07GLuMTbIbVOd',
+    'client_secret': 'EGCvZHCMNXajd-e72eGoDnzWNbKOF5Fc1D0-nP15sZuy-nGKt5NVlhHWGVfBRn__x3udeZlF-2jRRGGq'
 });
 
 exports.createUser = (req,res)=>{
@@ -66,7 +66,7 @@ exports.startPayment = (req,res)=>{
                         "payment_method": "paypal"
                     },
                     "redirect_urls": {
-                        "return_url": "http://localhost:3000/executePayment",
+                        "return_url": "http://localhost:4200/executePayment",
                         "cancel_url": "http://localhost:3000/cancel"
                     },
                     "transactions": [{
@@ -74,14 +74,14 @@ exports.startPayment = (req,res)=>{
                             "items": [{
                                 "name": req.body.source,
                                 "sku": req.body.destination,
-                                "price": price,
+                                "price": req.body.price,
                                 "currency": "USD",
                                 "quantity": req.body.passengers
                             }]
                         },
                         "amount": {
                             "currency": "USD",
-                            "total": bookingObj.price
+                            "total": req.body.price
                         },
                         "description": "Flight ticket booking"
                     }]
@@ -93,7 +93,7 @@ exports.startPayment = (req,res)=>{
                     } else {
                         for(let i=0;i< payment.links.length;i++){
                             if(payment.links[i].rel === 'approval_url') {
-                                res.redirect(payment.links[i].href);
+                                res.status(200).json({url :payment.links[i].href});
                             }
                         }
                     }
@@ -120,7 +120,7 @@ exports.executePayment = (req,res) => {
     paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
         if (error) {
             console.log(error.response);
-            throw error;
+            res.status(400).json({'message':'error'});
         } else {
             console.log(JSON.stringify(payment));
             res.status(200).json({'message':'Payment Successful'});
