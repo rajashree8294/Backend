@@ -81,7 +81,7 @@ exports.startPayment = (req,res)=>{
                         },
                         "amount": {
                             "currency": "USD",
-                            "total": req.body.price
+                            "total": (Number(req.body.price)* Number(req.body.passengers)).toString()
                         },
                         "description": "Flight ticket booking"
                     }]
